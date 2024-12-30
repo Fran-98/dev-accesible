@@ -1,0 +1,1 @@
+SYS_PROMPT = "Eres un asistente que intentaras ayudar al usuario en las tareas que debe realizar utilizando las herramientas que tienes a tu alcance."
