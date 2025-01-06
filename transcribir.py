@@ -1,12 +1,15 @@
 from openai import OpenAI
+import os
+from dotenv import load_dotenv
 
-client = OpenAI()
+load_dotenv()
+client = OpenAI(api_key=os.environ['OPENAI_API_KEY'])
 
 def transcribir():
-    audio_file= open('grabacion.mp3', "rb")
-    transcription = client.audio.transcriptions.create(
-    model="whisper-1", 
-    file=audio_file
-    )
-    return transcription.text
+    with open('grabacion.mp3', "rb") as file:
+        transcription = client.audio.transcriptions.create(
+        model="whisper-1", 
+        file=file
+        )
+        return transcription.text
 

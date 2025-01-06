@@ -5,6 +5,7 @@ from pynput import keyboard, mouse
 from transcribir import transcribir
 from llm import invoke_graph
 
+
 class AudioRecorder:
     def __init__(self):
         self.is_recording = False
@@ -52,7 +53,9 @@ class AudioRecorder:
             wf.writeframes(b''.join(self.frames))
 
     def llm_logic(self):
+        print('Transcribiendo')
         texto = transcribir()
+        print('Invocando agente')
         invoke_graph(texto)
 
     def cleanup(self):

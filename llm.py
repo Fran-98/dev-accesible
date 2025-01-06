@@ -6,6 +6,7 @@ from typing_extensions import TypedDict
 from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
+from langgraph.checkpoint.memory import MemorySaver
 
 from tools import tools
 from prompts import SYS_PROMPT
@@ -41,11 +42,15 @@ graph_builder.add_edge("tools", "chatbot")
 graph_builder.set_entry_point("chatbot")
 graph = graph_builder.compile()
 
+memory = MemorySaver()
+graph = graph_builder.compile(checkpointer=memory)
+
+config = {"configurable": {"thread_id": "1"}}
 
 def invoke_graph(trans: str):
     msg = [
       ("system", SYS_PROMPT),
       ("user", trans)
       ]
-    events = graph.invoke({"messages": msg})
+    events = graph.invoke({"messages": msg}, config=config)
     print(events['messages'][-1].content)
